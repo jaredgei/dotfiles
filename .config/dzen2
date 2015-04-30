@@ -1,0 +1,104 @@
+#!/bin/bash
+
+#SETTINGS
+FONTCOLOR="#DDDDDD"
+BACKGROUND="#000000"
+SCREEN_WIDTH=1680
+GAP=12
+WIDTH=$(($SCREEN_WIDTH-($GAP*2)))
+HEIGHT=20
+FONT=-*-terminus-medium-r-normal-*-11-*-*-*-*-*-iso10646-*
+SPACER="^fg($BACKGROUND)..^fg($FONTCOLOR)"
+TICKER=1
+ICONS="/home/jared/.config/icons"
+FULL="^i($ICONS/full.xbm)"
+ACTIVE="^i($ICONS/empty.xbm)"
+
+#START LOOP
+while true; do
+	CURTEXT=""
+	BATSTATUS="$(acpi | sed -r 's|.*: (.*)ing.*|\1|')"
+	#IF CHARGING, SHOW A COOL ANIMATION
+	if [ $BATSTATUS = "Charg" ];
+	  then
+  	    #TRACK TICKER
+	    case $TICKER in
+	    [1-9])
+	      TICKER=$(($TICKER + 1))
+	      ;;
+	    10)
+	      TICKER=1
+	      ;;
+	    esac
+	    CURTEXT=$CURTEXT"^fg(#CCFFCC)"
+	    for ((i=1; i<$TICKER; i++)); do
+		CURTEXT=$CURTEXT"|"
+	    done
+	    CURTEXT=$CURTEXT"^fg(#FFCCCC)|"
+	    CURTEXT=$CURTEXT"^fg(#9966FF)"
+	    for ((i=$TICKER; i<10; i++)); do
+		CURTEXT=$CURTEXT"|"
+	    done
+	    CURTEXT=$CURTEXT"^fg($FONTCOLOR)"
+
+	  #IF NOT CHARGING, DISPLAY BATTERY
+	  else
+	    #DISPLAY BATTERY BAR
+	    BATTERY="$(acpi | sed -r 's|.*, (.*)%.*|\1|')"
+	    case $BATTERY in
+	    100)
+	      CURTEXT=$CURTEXT"^fg(#CCFFCC)||||||||||^fg($FONTCOLOR)"
+	      ;;
+	    9[0-9])
+	      CURTEXT=$CURTEXT"^fg(#CCFFCC)|||||||||^fg(#FFCCCC)|^fg($FONTCOLOR)"
+	      ;;
+	    8[0-9])
+	      CURTEXT=$CURTEXT"^fg(#CCFFCC)||||||||^fg(#FFCCCC)||^fg($FONTCOLOR)"
+	      ;;
+	    7[0-9])
+	      CURTEXT=$CURTEXT"^fg(#CCFFCC)|||||||^fg(#FFCCCC)|||^fg($FONTCOLOR)"
+	      ;;
+	    6[0-9])
+	      CURTEXT=$CURTEXT"^fg(#CCFFCC)||||||^fg(#FFCCCC)||||^fg($FONTCOLOR)"
+	      ;;
+	    5[0-9])
+	      CURTEXT=$CURTEXT"^fg(#CCFFCC)|||||^fg(#FFCCCC)|||||^fg($FONTCOLOR)"
+	      ;;
+	    4[0-9]) 
+	      CURTEXT=$CURTEXT"^fg(#CCFFCC)||||^fg(#FFCCCC)||||||^fg($FONTCOLOR)"
+	      ;;
+	    3[0-9])
+	      CURTEXT=$CURTEXT"^fg(#CCFFCC)|||^fg(#FFCCCC)|||||||^fg($FONTCOLOR)"
+	      ;;
+	    2[0-9])
+	      CURTEXT=$CURTEXT"^fg(#CCFFCC)||^fg(#FFCCCC)||||||||^fg($FONTCOLOR)"
+	      ;;
+	    1[0-9])
+	      CURTEXT=$CURTEXT"^fg(#CCFFCC)|^fg(#FFCCCC)|||||||||^fg($FONTCOLOR)"
+	      ;;
+	    0[0-9])
+	      CURTEXT=$CURTEXT"^fg(#FFFFCC)|^fg(#FFCCCC)|||||||||^fg($FONTCOLOR)"
+	      ;;
+	    esac
+	fi
+	
+	#DESKTOPS
+	desktops=""
+	for desktop in `bspc query -D`
+	do
+		if [ $desktop = "`bspc query -d focused -D`" ]
+		then
+			desktops="$desktops $FULL"
+		else
+			desktops="$desktops $ACTIVE"
+		fi
+	done
+	desktops="$desktops "
+
+	#APPEND DATE
+	CURTEXT="^ca(1, thunar)^i($ICONS/arch_10x10.xbm)^ca()^pa(1409)"$desktops$SPACER$CURTEXT$SPACER$(date +"%l:%M:%S %p")$SPACER
+
+	#PRINT & REPEAT EVERY 0.5 SECONDS
+	echo $CURTEXT
+	sleep 0.5
+done | dzen2 -fg $FONTCOLOR -bg $BACKGROUND -ta r -fn $FONT -x $GAP -y $GAP -h $HEIGHT -w $WIDTH # & sleep 0.8s && transset-df 0.8 -n dzen
