@@ -1,0 +1,54 @@
+@import "mocha.css"; 
+
+* {
+    font-family: "NotoSans Nerd Font";
+    font-size: 13px;
+}
+
+window#waybar {
+    background: rgba(30, 30, 46, 0.6);
+    color: rgba(255, 255, 255, 1);
+}
+
+#custom-arch {
+    font-weight: bold;
+    padding: 0 16px;
+    color: @lavender;
+}
+
+#tray {
+    margin-right: 24px;
+} 
+
+#network,
+#pulseaudio {
+    font-size: 15px;
+    font-weight: bold;
+    padding-right: 24px;
+    padding-top: 1px;
+}
+
+#clock {
+    padding-right: 16px;
+    font-weight: bold;
+}
+
+#workspaces button {
+    padding: 0 4px;
+    margin: 6px 0;
+}
+
+#workspaces button.focused {
+    color: @mauve;
+    font-weight: bold;
+}
+
+#workspaces button.active {
+    color: @lavender;
+    font-weight: bold;
+}
+
+#workspaces button.urgent {
+    color: @red;
+    font-weight: bold;
+}

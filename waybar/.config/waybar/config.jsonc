@@ -1,0 +1,59 @@
+{
+  "position": "top",
+  "height": 36,
+  "modules-left": ["custom/arch", "hyprland/workspaces"],
+  "modules-center": ["hyprland/window"],
+  "modules-right": ["tray", "pulseaudio", "clock"],
+  "clock": {
+    "format": "{:%I:%M %p}",
+    "tooltip-format": "<tt><big>{calendar}</big></tt>",
+    "on-click": "firefox -new-window https://calendar.google.com",
+    "cursor": "false"
+  },
+  "custom/arch": {
+    "format": "",
+    "tooltip": false
+  },
+  "hyprland/workspaces": {
+    "format": "{icon}",
+    "format-icons": {
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7",
+      "8": "8",
+      "9": "9",
+      "10": ""
+    }
+  },
+  "hyprland/window": {
+    "tooltip": false
+  },
+  "custom/power": {
+    "format": "⏻",
+    "tooltip": false
+  },
+  "network": {
+    "format-wifi": "",
+    "format-ethernet": "",
+    "format-linked": "{ifname} (No IP)",
+    "format-disconnected": "󰤭",
+    "tooltip-format-wifi": "{ifname}",
+    "tooltip-format-ethernet": "{ifname}"
+  },
+  "tray": {
+    "spacing": 24
+  },
+  "pulseaudio": {
+    "format": "{icon}",
+    "format-muted": "",
+    "format-icons": {
+        "default": ["", "", ""]
+    },
+    "on-click": "pavucontrol",
+    "cursor": "false"
+  }
+}
