@@ -30,7 +30,6 @@ window#waybar {
 
 #clock {
     padding-right: 16px;
-    font-weight: bold;
 }
 
 #workspaces button {
