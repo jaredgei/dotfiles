@@ -53,7 +53,7 @@
     "format-icons": {
         "default": ["", "", ""]
     },
-    "on-click": "pavucontrol",
+    "on-click": "~/.config/waybar/pavucontrol-focusable.sh",
     "cursor": "false"
   }
 }
